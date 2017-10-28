@@ -26,11 +26,11 @@ def handle_command(command, channel):
                 response = "Starting Timer!!!"
                 slack_client.api_call("chat.postMessage", channel=channel,
                                       text=response, as_user=True)
-                time.sleep(10)
+                time.sleep(1500)
                 response = "Ran that Timer!!!"
                 slack_client.api_call("chat.postMessage", channel=channel,
                                   text=response, as_user=True)
-                time.sleep(5)
+                time.sleep(300)
 
 def parse_slack_output(slack_rtm_output):
     output_list = slack_rtm_output
