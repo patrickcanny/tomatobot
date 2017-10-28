@@ -1,23 +1,17 @@
 import os
 from slackclient import SlackClient
 
-SLACK_CLIENT_ID = os.environ.get('CLIENT_ID')
-SLACK_CLIENT_SECRET = os.environ.get('CLIENT_SECRET')
-VERIFICATION_TOKEN = os.environ.get('VERIFICATION_TOKEN')
+BOT_NAME = 'tomatotimer'
 
-slack_client = SlackClient(VERIFICATION_TOKEN)
+slack_client = SlackClient(os.environ.get('SLACK_API_TOKEN'))
 
-def list_channels():
-    channels_call = slack_client.api_call("channels.list")
-    if channels_call.get('ok'):
-        return channels_call['channels']
-    return none
-
-if __name__ == '__main__':
-    channels = list_channels()
-    if channels:
-        print("Channels: ")
-        for c in channels:
-            print(c['name'] + " (" + c['id'] + ")")
+if __name__ == "__main__":
+    api_call = slack_client.api_call("users.list")
+    if api_call.get('ok'):
+        # retrieve all users so we can find our bot
+        users = api_call.get('members')
+        for user in users:
+            if 'name' in user and user.get('name') == BOT_NAME:
+                print("Bot ID for '" + user['name'] + "' is " + user.get('id'))
     else:
-        print("Unable to authenticate.")
+        print("could not find bot user with the name " + BOT_NAME)
